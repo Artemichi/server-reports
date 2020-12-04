@@ -67,7 +67,7 @@ async function create(input, output) {
 
     // Apply styles to worksheet.
     xlsx_report_WS.getColumn(1).width = 35;
-    [2, 3, 4, 5, 6, 7, 8, 9, 10].forEach((col) => {
+    [2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(col => {
       xlsx_report_WS.getColumn(col).width = col > 4 ? 15 : 20;
     });
 
@@ -100,4 +100,5 @@ async function renderChartImage() {
   });
 }
 
+// Export module methods
 module.exports = { create, renderChartImage };
