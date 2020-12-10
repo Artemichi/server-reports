@@ -61,7 +61,7 @@ async function create(input, output) {
 }
 
 /**
- * Description. Renders chart image from given setting and after all done executes callback function.
+ * Description. Renders chart image from and sends to a client by callback.
  *
  * @global
  *

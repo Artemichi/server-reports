@@ -30,7 +30,7 @@ app.post("/report", (req, res) => {
 
   const output = `${outputFolder}/report_${today}.xlsx`;
 
-  report.create(input, output);
+  //report.create(input, output);
 
   console.log(req.body);
 
