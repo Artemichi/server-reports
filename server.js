@@ -6,7 +6,7 @@ const report = require("./report");
 // EXPRESS
 const app = express();
 const PORT = process.env.PORT || 4545;
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(cors());
 
 // FOLDERS
@@ -25,8 +25,8 @@ app.post("/report", (req, res) => {
   console.log("POST/REPORT");
 
   //const source = `report_${yesterday}.csv`;
-  const { filename } = req.body;
-  const input = `${inputFolder}/${filename}`;
+  const { source } = req.body;
+  const input = `${inputFolder}/${source}`;
 
   const output = `${outputFolder}/report_${today}.xlsx`;
 
