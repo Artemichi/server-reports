@@ -1,7 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const exporter = require("highcharts-export-server");
+const fs = require("fs");
+
 const report = require("./report");
+const settings = require("./exportSettings");
 
 // EXPRESS
 const app = express();
@@ -22,7 +26,7 @@ const yesterday = ((d) => new Date(d.setDate(d.getDate() - 1)).toLocaleString().
 );
 
 app.post("/report", (req, res) => {
-  console.log("__REPORT__");
+  console.log("POST/REPORT");
 
   //const source = `report_${yesterday}.csv`;
   const { filename } = req.body;
@@ -31,11 +35,22 @@ app.post("/report", (req, res) => {
   const output = `${outputFolder}/report_${today}.xlsx`;
 
   report.create(input, output);
+
+  console.log(req.body);
+
+  res.status(201).send();
 });
 
 app.get("/", (req, res) => {
-  console.log("__MAIN__");
-  //report.renderChartImage()
+  console.log("GET/");
+  exporter.initPool();
+  exporter.export(settings, async function (err, result) {
+    const { data } = result;
+    const response = `<div><img src="data:image/png;base64, ${data}" alt="Chart"/></div>`;
+    res.send(response);
+    //fs.writeFile("out.png", data, "base64");
+    exporter.killPool();
+  });
 });
 
 app.listen(PORT, () => {
