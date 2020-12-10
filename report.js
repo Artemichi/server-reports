@@ -2,7 +2,7 @@ const Excel = require("exceljs");
 const exporter = require("highcharts-export-server");
 const fs = require("fs");
 
-//cfg
+// Chart config
 const exportSettings = require("./exportSettings");
 
 /**
@@ -60,5 +60,22 @@ async function create(input, output) {
   });
 }
 
+/**
+ * Description. Renders chart image from given setting and after all done executes callback function.
+ *
+ * @global
+ *
+ * @param {Function}   callback       callback to be executed with result of PhantomJS pool render.
+ */
+async function renderImageToClient(callback) {
+  exporter.initPool();
+  exporter.export(exportSettings, async function (err, result) {
+    const { data } = result;
+    const response = `<div><img src="data:image/png;base64, ${data}" alt="Chart"/></div>`;
+    callback(response);
+    exporter.killPool();
+  });
+}
+
 // Export module method
-module.exports = { create };
+module.exports = { create, renderImageToClient };

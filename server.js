@@ -1,11 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const exporter = require("highcharts-export-server");
-const fs = require("fs");
-
 const report = require("./report");
-const settings = require("./exportSettings");
 
 // EXPRESS
 const app = express();
@@ -41,16 +37,13 @@ app.post("/report", (req, res) => {
   res.status(201).send();
 });
 
+app.get("/chart", (req, res) => {
+  console.log("GET/CHART");
+  report.renderImageToClient(res.send.bind(res));
+});
+
 app.get("/", (req, res) => {
   console.log("GET/");
-  exporter.initPool();
-  exporter.export(settings, async function (err, result) {
-    const { data } = result;
-    const response = `<div><img src="data:image/png;base64, ${data}" alt="Chart"/></div>`;
-    res.send(response);
-    //fs.writeFile("out.png", data, "base64");
-    exporter.killPool();
-  });
 });
 
 app.listen(PORT, () => {
