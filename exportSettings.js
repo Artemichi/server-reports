@@ -2,24 +2,9 @@ module.exports = {
   type: "png",
   options: {
     title: {
-      text: "My Chart",
+      text: "",
     },
-    xAxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "Mar",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
-    },
+    xAxis: {},
     series: [
       {
         type: "line",

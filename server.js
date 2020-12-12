@@ -39,11 +39,12 @@ app.post("/report", (req, res) => {
 
 app.get("/chart", (req, res) => {
   console.log("GET/CHART");
-  report.renderImageToClient(res.send.bind(res));
+  report.renderImageToClient(res.status(200).send.bind(res));
 });
 
 app.get("/", (req, res) => {
   console.log("GET/");
+  res.status(200).send("<h1>ROOT</h1>");
 });
 
 app.listen(PORT, () => {

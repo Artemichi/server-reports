@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -15,5 +16,8 @@
     "exceljs": "^4.2.0",
     "express": "^4.16.0",
     "highcharts-export-server": "^2.0.28"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }

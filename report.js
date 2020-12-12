@@ -69,8 +69,8 @@ async function create(input, output) {
  */
 async function renderImageToClient(callback) {
   exporter.initPool();
-  exporter.export(exportSettings, async function (err, result) {
-    const { data } = result;
+  exporter.export(exportSettings, async function (err, res) {
+    const { data } = res;
     const response = `<div><img src="data:image/png;base64, ${data}" alt="Chart"/></div>`;
     callback(response);
     exporter.killPool();
