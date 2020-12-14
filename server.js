@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const report = require("./report");
+const exportSettings = require("./exportSettings");
 
 // EXPRESS
 const app = express();
@@ -17,7 +18,8 @@ const outputFolder = "./files";
 
 const today = new Date().toLocaleString().split(",").shift();
 
-const yesterday = ((d) => new Date(d.setDate(d.getDate() - 1)).toLocaleString().split(",").shift())(
+const yesterday = (d =>
+  new Date(d.setDate(d.getDate() - 1)).toLocaleString().split(",").shift())(
   new Date()
 );
 
@@ -37,9 +39,10 @@ app.post("/report", (req, res) => {
   res.status(201).send();
 });
 
+// debug chart
 app.get("/chart", (req, res) => {
   console.log("GET/CHART");
-  report.renderImageToClient(res.status(200).send.bind(res));
+  report.renderImageToClient(exportSettings, res.status(200).send.bind(res));
 });
 
 app.get("/", (req, res) => {
@@ -48,6 +51,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("SERVER IS UP");
-  console.log("RUNNING ON PORT: " + PORT);
+  console.log("SERVER IS RUNNING ON PORT: " + PORT);
 });

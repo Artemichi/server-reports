@@ -4,6 +4,13 @@ module.exports = {
     title: {
       text: "",
     },
+    chart: {
+      width: 1000,
+      height: 2000,
+    },
+    credits: {
+      enabled: false,
+    },
     xAxis: {},
     series: [
       {

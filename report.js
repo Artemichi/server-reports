@@ -35,7 +35,7 @@ async function create(input, output) {
 
     // Apply styles to worksheet.
     xlsx_report_WS.getColumn(1).width = 35;
-    [2, 3, 4, 5, 6, 7, 8, 9, 10].forEach((col) => {
+    [2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(col => {
       xlsx_report_WS.getColumn(col).width = col > 4 ? 15 : 20;
     });
 
@@ -65,11 +65,12 @@ async function create(input, output) {
  *
  * @global
  *
- * @param {Function}   callback       callback to be executed with result of PhantomJS pool render.
+ * @param {Function}   config       chart configuration.
+ * @param {Function}   callback     callback to be executed with result of PhantomJS pool render.
  */
-async function renderImageToClient(callback) {
+async function renderImageToClient(config, callback) {
   exporter.initPool();
-  exporter.export(exportSettings, async function (err, res) {
+  exporter.export(config, async function (err, res) {
     const { data } = res;
     const response = `<div><img src="data:image/png;base64, ${data}" alt="Chart"/></div>`;
     callback(response);
