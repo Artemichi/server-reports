@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const fs = require("fs");
 const report = require("./report");
 const exportSettings = require("./exportSettings");
 
@@ -35,6 +36,9 @@ app.post("/report", (req, res) => {
   //report.create(input, output);
 
   console.log(req.body);
+  // fs.writeFile("data.json", JSON.stringify(req.body), "utf8", () =>
+  //   console.log("done")
+  // );
 
   res.status(201).send();
 });
@@ -47,6 +51,11 @@ app.get("/chart", (req, res) => {
 
 app.get("/", (req, res) => {
   console.log("GET/");
+
+  fs.readFile("data.json", "utf8", (err, data) => {
+    console.log(JSON.parse(data));
+  });
+
   res.status(200).send("<h1>ROOT</h1>");
 });
 
