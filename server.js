@@ -1,14 +1,19 @@
+// express imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+// utils imports
+const os = require("os");
 const fs = require("fs");
+const dns = require("dns");
+// report
 const report = require("./report");
 const exportSettings = require("./exportSettings");
 
 // EXPRESS
 const app = express();
 const PORT = process.env.PORT || 4545;
-app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 
 // FOLDERS
@@ -17,27 +22,20 @@ app.use(cors());
 const inputFolder = "./files";
 const outputFolder = "./files";
 
-const today = new Date().toLocaleString().split(",").shift();
-
-const yesterday = (d =>
-  new Date(d.setDate(d.getDate() - 1)).toLocaleString().split(",").shift())(
-  new Date()
-);
-
 app.post("/report", (req, res) => {
   console.log("POST/REPORT");
-
-  //const source = `report_${yesterday}.csv`;
   const { source } = req.body;
+  const today = new Date().toLocaleString().split(",").shift();
   const input = `${inputFolder}/${source}`;
-
   const output = `${outputFolder}/report_${today}.xlsx`;
 
   //report.create(input, output);
 
   console.log(req.body);
+
+  // save request
   // fs.writeFile("data.json", JSON.stringify(req.body), "utf8", () =>
-  //   console.log("done")
+  //   console.log("request -> data.json")
   // );
 
   res.status(201).send();
@@ -60,5 +58,8 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("SERVER IS RUNNING ON PORT: " + PORT);
+  dns.lookup(os.hostname(), function (err, add, fam) {
+    console.log("SERVER IS RUNNING");
+    console.log(`root ${add}:${PORT}`);
+  });
 });
