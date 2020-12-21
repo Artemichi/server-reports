@@ -8,7 +8,7 @@ const fs = require("fs");
 const dns = require("dns");
 // report
 const report = require("./report");
-const exportSettings = require("./exportSettings");
+const { createConfig } = require("./export");
 
 // EXPRESS
 const app = express();
@@ -41,25 +41,25 @@ app.post("/report", (req, res) => {
   res.status(201).send();
 });
 
-// debug chart
 app.get("/chart", (req, res) => {
   console.log("GET/CHART");
-  report.renderImageToClient(exportSettings, res.status(200).send.bind(res));
+  fs.readFile("data.json", "utf8", (err, data) => {
+    const { nodes } = JSON.parse(data);
+    report.renderImageToClient(
+      createConfig(nodes),
+      res.status(200).send.bind(res)
+    );
+  });
 });
 
 app.get("/", (req, res) => {
   console.log("GET/");
-
-  fs.readFile("data.json", "utf8", (err, data) => {
-    console.log(JSON.parse(data));
-  });
-
-  res.status(200).send("<h1>ROOT</h1>");
+  res.status(200).send("<h1>MAIN</h1>");
 });
 
 app.listen(PORT, () => {
   dns.lookup(os.hostname(), function (err, add, fam) {
     console.log("SERVER IS RUNNING");
-    console.log(`root ${add}:${PORT}`);
+    console.log(`LOCAL -> http://${add}:${PORT}`);
   });
 });

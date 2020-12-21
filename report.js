@@ -3,7 +3,7 @@ const exporter = require("highcharts-export-server");
 const fs = require("fs");
 
 // Chart config
-const exportSettings = require("./exportSettings");
+const exportSettings = require("./export");
 
 /**
  * Description. Creates xlsx report from given csv source file.
