@@ -1,4 +1,4 @@
-function createConfig(nodes) {
+function createConfig(nodes, params) {
   function map_range(value, low1, high1, low2, high2) {
     return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
   }
@@ -53,8 +53,8 @@ function createConfig(nodes) {
       xAxis: {
         type: "datetime",
         tickInterval: 1000 * 60 * 5,
-        min: new Date(2020, 9, 22, 00, 00, 00).getTime(),
-        max: new Date(2020, 9, 22, 23, 59, 00).getTime(),
+        min: Date.parse(params.starttime),
+        max: Date.parse(params.endtime),
       },
       yAxis: [
         {
@@ -159,7 +159,7 @@ function createConfig(nodes) {
     exportSettings.options.yAxis[
       current_yAxis
     ].title.text += `<span>${name}</span><br>`;
-    if (capacity == 8) {
+    if (capacity == 6) {
       capacity = 0;
       current_yAxis += 1;
     }

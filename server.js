@@ -44,9 +44,9 @@ app.post("/report", (req, res) => {
 app.get("/chart", (req, res) => {
   console.log("GET/CHART");
   fs.readFile("data.json", "utf8", (err, data) => {
-    const { nodes } = JSON.parse(data);
+    const { nodes, params } = JSON.parse(data);
     report.renderImageToClient(
-      createConfig(nodes),
+      createConfig(nodes, params),
       res.status(200).send.bind(res)
     );
   });
