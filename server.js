@@ -30,14 +30,6 @@ app.post("/report", (req, res) => {
   const output = `${outputFolder}/report_${today}.xlsx`;
 
   report.create(input, output, createConfig(nodes, params));
-
-  // console.log(req.body);
-
-  // save request
-  // fs.writeFile("data.json", JSON.stringify(req.body), "utf8", () =>
-  //   console.log("request -> data.json")
-  // );
-
   res.status(201).send();
 });
 
@@ -53,13 +45,11 @@ app.get("/chart", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  console.log("GET/");
   res.status(200).send("<h1>MAIN</h1>");
 });
 
 app.listen(PORT, () => {
   dns.lookup(os.hostname(), function (err, add, fam) {
-    console.log("SERVER IS RUNNING");
-    console.log(`LOCAL -> http://${add}:${PORT}`);
+    console.log(`LOCAL -> http://${add}:${PORT}/chart`);
   });
 });

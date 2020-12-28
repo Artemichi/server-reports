@@ -6,9 +6,18 @@ function createConfig(nodes, params) {
     const v = array.map(el => el[1]);
     return [Math.min.apply(null, v), Math.max.apply(null, v)];
   }
-
-  const titleOffset = 10;
-
+  const colors = [
+    "#7cb5ec",
+    "#434348",
+    "#90ed7d",
+    "#f7a35c",
+    "#8085e9",
+    "#f15c80",
+    "#e4d354",
+    "#2b908f",
+    "#f45b5b",
+    "#91e8e1",
+  ];
   const exportSettings = {
     type: "png",
     globalOptions: {
@@ -43,15 +52,14 @@ function createConfig(nodes, params) {
         inverted: true,
       },
       credits: {
-        enabled: false,
-      },
-      tooltip: { enabled: false },
-      legend: { enabled: false },
-      plotOptions: {
-        series: {
-          enableMouseTracking: false,
+        text: "© РИГИНТЕЛ",
+        style: {
+          fontSize: "10px",
+          color: "#111",
         },
+        position: { align: "left", x: 0, y: 0 },
       },
+      legend: { enabled: false },
       xAxis: {
         type: "datetime",
         tickInterval: 1000 * 60 * 5,
@@ -64,7 +72,7 @@ function createConfig(nodes, params) {
             text: "",
           },
           width: "25%",
-          offset: titleOffset,
+          offset: 10,
           opposite: true,
           labels: { enabled: false },
         },
@@ -74,7 +82,7 @@ function createConfig(nodes, params) {
           },
           width: "25%",
           left: "25%",
-          offset: titleOffset,
+          offset: 10,
           opposite: true,
           labels: { enabled: false },
         },
@@ -84,7 +92,7 @@ function createConfig(nodes, params) {
           },
           width: "25%",
           left: "50%",
-          offset: titleOffset,
+          offset: 10,
           opposite: true,
           labels: { enabled: false },
         },
@@ -94,7 +102,7 @@ function createConfig(nodes, params) {
           },
           width: "25%",
           left: "75%",
-          offset: titleOffset,
+          offset: 10,
           opposite: true,
           labels: { enabled: false },
         },
@@ -102,11 +110,9 @@ function createConfig(nodes, params) {
       series: [],
     },
   };
-
-  // Смещение графиков
-  let current_yAxis = 0;
-  let capacity = 0;
-  //---------------------
+  let current_yAxis = 0,
+    capacity = 0,
+    colorIdx = 0;
   nodes.forEach(node => {
     const { name, data } = node;
     if (data.length) {
@@ -157,14 +163,16 @@ function createConfig(nodes, params) {
         yAxis: current_yAxis,
       });
     }
-    capacity += 1;
     exportSettings.options.yAxis[
       current_yAxis
-    ].title.text += `<span>${name}</span><br>`;
+    ].title.text += `<span style='color: ${colors[colorIdx]}; font-size: 15px'>${name}</span><br>`;
+    colorIdx += 1;
+    capacity += 1;
     if (capacity == 6) {
       capacity = 0;
       current_yAxis += 1;
     }
+    if (colorIdx === colors.length) colorIdx = 0;
   });
 
   return exportSettings;
