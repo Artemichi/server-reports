@@ -7,6 +7,8 @@ function createConfig(nodes, params) {
     return [Math.min.apply(null, v), Math.max.apply(null, v)];
   }
 
+  const titleOffset = 10;
+
   const exportSettings = {
     type: "png",
     globalOptions: {
@@ -62,7 +64,7 @@ function createConfig(nodes, params) {
             text: "",
           },
           width: "25%",
-          offset: 0,
+          offset: titleOffset,
           opposite: true,
           labels: { enabled: false },
         },
@@ -72,7 +74,7 @@ function createConfig(nodes, params) {
           },
           width: "25%",
           left: "25%",
-          offset: 0,
+          offset: titleOffset,
           opposite: true,
           labels: { enabled: false },
         },
@@ -82,7 +84,7 @@ function createConfig(nodes, params) {
           },
           width: "25%",
           left: "50%",
-          offset: 0,
+          offset: titleOffset,
           opposite: true,
           labels: { enabled: false },
         },
@@ -92,7 +94,7 @@ function createConfig(nodes, params) {
           },
           width: "25%",
           left: "75%",
-          offset: 0,
+          offset: titleOffset,
           opposite: true,
           labels: { enabled: false },
         },
@@ -117,7 +119,7 @@ function createConfig(nodes, params) {
       const aggr_interval = 1000 * 60;
       while (parsed.length > 0) {
         const filtered = [];
-        for (let idx = 0; idx < parsed.length; idx++) {
+        for (let idx = 0, len = parsed.length; idx < len; idx++) {
           const current = parsed[idx];
           if (current[0] <= start + aggr_interval) {
             filtered.push(current);
@@ -138,8 +140,8 @@ function createConfig(nodes, params) {
           point[1],
           extremes[0],
           extremes[1],
-          extremes[0] < 0 ? -10 : 0,
-          10
+          extremes[0] < 0 ? -100 : 0,
+          100
         ),
       ]);
 

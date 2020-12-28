@@ -2,9 +2,6 @@ const Excel = require("exceljs");
 const exporter = require("highcharts-export-server");
 const fs = require("fs");
 
-// Chart config
-const exportSettings = require("./export");
-
 /**
  * Description. Creates xlsx report from given csv source file.
  *
@@ -13,11 +10,11 @@ const exportSettings = require("./export");
  * @param {String}   input       Path to CSV source file.
  * @param {String}   output      Output file path.
  */
-async function create(input, output) {
+async function create(input, output, config) {
   //Set up a pool of PhantomJS.
   exporter.initPool();
 
-  exporter.export(exportSettings, async function (err, res) {
+  exporter.export(config, async function (err, res) {
     // get base64 encoded.
     const { data } = res;
 
@@ -45,9 +42,16 @@ async function create(input, output) {
       base64: data,
       extension: "png",
     });
+    // TOP, LEFT of chart offset in xlsx cells
+    const colNum = 0,
+      rowNum = 0,
+      { width, height } = config.options.chart;
     xlsx_chart_WS.addImage(image, {
-      tl: { col: 0, row: 2 },
-      br: { col: 10, row: 20 },
+      tl: { col: colNum, row: rowNum },
+      br: {
+        col: colNum + Math.round(width / 64),
+        row: rowNum + Math.round(height / 20),
+      },
     });
 
     // Write created xlsx to given path.
@@ -78,5 +82,5 @@ async function renderImageToClient(config, callback) {
   });
 }
 
-// Export module method
+// Export module methods
 module.exports = { create, renderImageToClient };

@@ -1,8 +1,8 @@
-// express imports
+// express
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// utils imports
+// utils
 const os = require("os");
 const fs = require("fs");
 const dns = require("dns");
@@ -24,14 +24,14 @@ const outputFolder = "./files";
 
 app.post("/report", (req, res) => {
   console.log("POST/REPORT");
-  const { source } = req.body;
+  const { source, nodes, params } = req.body;
   const today = new Date().toLocaleString().split(",").shift();
   const input = `${inputFolder}/${source}`;
   const output = `${outputFolder}/report_${today}.xlsx`;
 
-  //report.create(input, output);
+  report.create(input, output, createConfig(nodes, params));
 
-  console.log(req.body);
+  // console.log(req.body);
 
   // save request
   // fs.writeFile("data.json", JSON.stringify(req.body), "utf8", () =>
