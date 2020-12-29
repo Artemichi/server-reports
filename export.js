@@ -57,7 +57,7 @@ function createConfig(nodes, params) {
           fontSize: "10px",
           color: "#111",
         },
-        position: { align: "left", x: 0, y: 0 },
+        position: { align: "left", x: 0, y: -2 },
       },
       legend: { enabled: false },
       xAxis: {
