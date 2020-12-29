@@ -168,7 +168,7 @@ function createConfig(nodes, params) {
     ].title.text += `<span style='color: ${colors[colorIdx]}; font-size: 15px'>${name}</span><br>`;
     colorIdx += 1;
     capacity += 1;
-    if (capacity == 6) {
+    if (capacity == 8) {
       capacity = 0;
       current_yAxis += 1;
     }

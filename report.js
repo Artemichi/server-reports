@@ -9,6 +9,7 @@ const fs = require("fs");
  *
  * @param {String}   input       Path to CSV source file.
  * @param {String}   output      Output file path.
+ * @param {Object}   config      Options for highcharts-export.
  */
 async function create(input, output, config) {
   //Set up a pool of PhantomJS.
