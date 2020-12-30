@@ -16,25 +16,18 @@ const PORT = process.env.PORT || 4545;
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 
-// FOLDERS
-//const inputFolder = "C:/Program Files/atvise/rigdata/reports";
-//const outputFolder = "C:/Program Files/atvise/rigdata/reports";
-const inputFolder = "./files";
-const outputFolder = "./files";
-
 app.post("/report", (req, res) => {
-  console.log("POST/REPORT");
+  const inputFolder = "./files";
+  const outputFolder = "./files";
   const { source, nodes, params } = req.body;
   const today = new Date().toLocaleString().split(",").shift();
   const input = `${inputFolder}/${source}`;
   const output = `${outputFolder}/report_${today}.xlsx`;
-
-  report.create(input, output, createConfig(nodes, params));
+  //report.create(input, output, createConfig(nodes, params));
   res.status(201).send();
 });
 
 app.get("/chart", (req, res) => {
-  console.log("GET/CHART");
   fs.readFile("data.json", "utf8", (err, data) => {
     const { nodes, params } = JSON.parse(data);
     report.renderImageToClient(
