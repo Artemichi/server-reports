@@ -57,7 +57,7 @@ function createConfig(nodes, params) {
           fontSize: "10px",
           color: "#111",
         },
-        position: { align: "left", x: 0, y: -2 },
+        // position: { align: "left", x: 0, y: -2 },
       },
       legend: { enabled: false },
       xAxis: {
@@ -74,7 +74,7 @@ function createConfig(nodes, params) {
           width: "25%",
           offset: 10,
           opposite: true,
-          labels: { enabled: false },
+          // labels: { enabled: false },
         },
         {
           title: {
@@ -84,7 +84,7 @@ function createConfig(nodes, params) {
           left: "25%",
           offset: 10,
           opposite: true,
-          labels: { enabled: false },
+          // labels: { enabled: false },
         },
         {
           title: {
@@ -94,7 +94,7 @@ function createConfig(nodes, params) {
           left: "50%",
           offset: 10,
           opposite: true,
-          labels: { enabled: false },
+          // labels: { enabled: false },
         },
         {
           title: {
@@ -104,7 +104,7 @@ function createConfig(nodes, params) {
           left: "75%",
           offset: 10,
           opposite: true,
-          labels: { enabled: false },
+          // labels: { enabled: false },
         },
       ],
       series: [],
@@ -112,7 +112,8 @@ function createConfig(nodes, params) {
   };
   let current_yAxis = 0,
     capacity = 0,
-    colorIdx = 0;
+    axisLimit = Math.round(nodes.length / 4);
+  colorIdx = 0;
   nodes.forEach(node => {
     const { name, data } = node;
     if (data.length) {
@@ -168,7 +169,7 @@ function createConfig(nodes, params) {
     ].title.text += `<span style='color: ${colors[colorIdx]}; font-size: 15px'>${name}</span><br>`;
     colorIdx += 1;
     capacity += 1;
-    if (capacity == 8) {
+    if (capacity == axisLimit) {
       capacity = 0;
       current_yAxis += 1;
     }

@@ -24,6 +24,12 @@ app.post("/report", (req, res) => {
   const input = `${inputFolder}/${source}`;
   const output = `${outputFolder}/report_${today}.xlsx`;
   //report.create(input, output, createConfig(nodes, params));
+
+  // save request
+  // fs.writeFile("data.json", JSON.stringify(req.body), "utf8", () =>
+  //   console.log("request -> data.json")
+  // );
+
   res.status(201).send();
 });
 
