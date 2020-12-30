@@ -1,25 +1,29 @@
 function createConfig(nodes, params) {
-  function map_range(value, low1, high1, low2, high2) {
-    return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
-  }
-  function calc_extremes(array) {
-    const v = array.map(el => el[1]);
-    return [Math.min.apply(null, v), Math.max.apply(null, v)];
-  }
   const colors = [
     "#7cb5ec",
     "#434348",
-    "#90ed7d",
+    "#5c9540",
     "#f7a35c",
     "#8085e9",
     "#f15c80",
-    "#e4d354",
+    "#a33e2a",
     "#2b908f",
     "#f45b5b",
-    "#91e8e1",
+    "#a050d9",
   ];
   const exportSettings = {
     type: "png",
+    callback: `function (chart) {
+      chart.yAxis.forEach(function (ax) {
+        ax.update({
+          labels: {
+            formatter: function () {
+              return this.isLast || this.isFirst ? "" : this.value;
+            },
+          },
+        });
+      });
+    }`,
     globalOptions: {
       lang: {
         shortMonths: [
@@ -42,13 +46,13 @@ function createConfig(nodes, params) {
       time: {
         timezoneOffset: new Date().getTimezoneOffset(),
       },
-
+      colors,
       title: {
         text: "",
       },
       chart: {
         width: 1900,
-        height: 6000,
+        height: 7000,
         inverted: true,
       },
       credits: {
@@ -57,7 +61,7 @@ function createConfig(nodes, params) {
           fontSize: "10px",
           color: "#111",
         },
-        // position: { align: "left", x: 0, y: -2 },
+        position: { align: "left", x: 3, y: -2 },
       },
       legend: { enabled: false },
       xAxis: {
@@ -66,56 +70,18 @@ function createConfig(nodes, params) {
         min: Date.parse(params.starttime),
         max: Date.parse(params.endtime),
       },
-      yAxis: [
-        {
-          title: {
-            text: "",
-          },
-          width: "25%",
-          offset: 10,
-          opposite: true,
-          // labels: { enabled: false },
-        },
-        {
-          title: {
-            text: "",
-          },
-          width: "25%",
-          left: "25%",
-          offset: 10,
-          opposite: true,
-          // labels: { enabled: false },
-        },
-        {
-          title: {
-            text: "",
-          },
-          width: "25%",
-          left: "50%",
-          offset: 10,
-          opposite: true,
-          // labels: { enabled: false },
-        },
-        {
-          title: {
-            text: "",
-          },
-          width: "25%",
-          left: "75%",
-          offset: 10,
-          opposite: true,
-          // labels: { enabled: false },
-        },
-      ],
+      yAxis: [],
       series: [],
     },
   };
-  let current_yAxis = 0,
-    capacity = 0,
-    axisLimit = Math.round(nodes.length / 4);
-  colorIdx = 0;
+  let current_yAxis = 0;
+  let capacity = 0;
+  let axisLimit = Math.round(nodes.length / 4);
+  let colorIdx = 0;
+  let axisGap = 0;
+  let axisLeftOffset = 0;
   nodes.forEach(node => {
-    const { name, data } = node;
+    const { name, unit, data } = node;
     if (data.length) {
       const parsed = data.map(point => {
         const { value, servertime } = point;
@@ -140,38 +106,54 @@ function createConfig(nodes, params) {
         }
         start += aggr_interval;
       }
-      const extremes = calc_extremes(aggregated);
-      const interpolated = aggregated.map(point => [
-        point[0],
-        map_range(
-          point[1],
-          extremes[0],
-          extremes[1],
-          extremes[0] < 0 ? -100 : 0,
-          100
-        ),
-      ]);
-
+      exportSettings.options.yAxis.push({
+        title: {
+          text: `<span style='color: ${colors[colorIdx]}; font-size: 15px'>${name}, ${unit}</span><br>`,
+        },
+        width: "25%",
+        left: `${axisLeftOffset}%`,
+        offset: axisGap,
+        opposite: true,
+        labels: {
+          style: {
+            color: colors[colorIdx],
+            fontSize: "12px",
+          },
+        },
+      });
       exportSettings.options.series.push({
         name,
         keys: ["x", "y"],
-        data: interpolated,
+        data: aggregated,
         yAxis: current_yAxis,
       });
+
+      axisGap += 50;
     } else {
+      axisGap += 15;
+      exportSettings.options.yAxis.push({
+        title: {
+          text: `<span style='color: ${colors[colorIdx]}; font-size: 15px'>${name}, ${unit}</span><br>`,
+        },
+        width: "25%",
+        left: `${axisLeftOffset}%`,
+        offset: axisGap,
+        opposite: true,
+      });
       exportSettings.options.series.push({
         name,
         yAxis: current_yAxis,
       });
+
+      axisGap += 25;
     }
-    exportSettings.options.yAxis[
-      current_yAxis
-    ].title.text += `<span style='color: ${colors[colorIdx]}; font-size: 15px'>${name}</span><br>`;
     colorIdx += 1;
     capacity += 1;
+    current_yAxis += 1;
     if (capacity == axisLimit) {
       capacity = 0;
-      current_yAxis += 1;
+      axisGap = 0;
+      axisLeftOffset += 25;
     }
     if (colorIdx === colors.length) colorIdx = 0;
   });
