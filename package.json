@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "pkg": {
+    "scripts": [
+      "report.js",
+      "export.js"
+    ],
+    "assets": [
+      "data.json"
+    ]
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
