@@ -17,12 +17,11 @@ app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 
 app.post("/report", (req, res) => {
-  const inputFolder = "./files";
-  const outputFolder = "./files";
+  const IOdir = "../reports";
   const { source, nodes, params } = req.body;
   const today = new Date().toLocaleString().split(",").shift();
-  const input = `${inputFolder}/${source}`;
-  const output = `${outputFolder}/report_${today}.xlsx`;
+  const input = `${IOdir}/${source}`;
+  const output = `${IOdir}/report_${today}.xlsx`;
   report.create(input, output, createConfig(nodes, params));
 
   // save request
@@ -49,6 +48,6 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   dns.lookup(os.hostname(), function (err, add, fam) {
-    console.log(`LOCAL -> http://${add}:${PORT}/chart`);
+    console.log(`test -> http://${add}:${PORT}/chart`);
   });
 });

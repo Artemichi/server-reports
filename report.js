@@ -59,7 +59,7 @@ async function create(input, output, config) {
     await xlsxWB.xlsx.writeFile(output);
 
     // Delete source csv file.
-    // fs.unlinkSync(input)
+    fs.unlinkSync(input);
 
     exporter.killPool();
   });
