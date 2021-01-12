@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build:exe": "nexe -i server.js -t windows-x64-12.9.0"
   },
   "keywords": [],
   "author": "Artem Chugainov",
