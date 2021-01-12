@@ -8,7 +8,7 @@
     "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Artem Chugainov",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.16.0",
