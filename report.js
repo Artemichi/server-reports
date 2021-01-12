@@ -5,11 +5,9 @@ const fs = require("fs");
 /**
  * Description. Creates xlsx report from given csv source file.
  *
- * @global
- *
- * @param {String}   input       Path to CSV source file.
- * @param {String}   output      Output file path.
- * @param {Object}   config      Options for highcharts-export.
+ * @param {String}   input
+ * @param {String}   output
+ * @param {Object}   config
  */
 async function create(input, output, config) {
   //Set up a pool of PhantomJS.
@@ -37,7 +35,7 @@ async function create(input, output, config) {
       xlsx_report_WS.getColumn(col).width = col > 4 ? 15 : 20;
     });
 
-    // Create worksheet for charts, add image object to workbook adn worksheet.
+    // Create worksheet for charts, add image object to workbook and worksheet.
     const xlsx_chart_WS = xlsxWB.addWorksheet("Chart");
     const image = xlsxWB.addImage({
       base64: data,
@@ -66,9 +64,7 @@ async function create(input, output, config) {
 }
 
 /**
- * Description. Renders chart image from and sends to a client by callback.
- *
- * @global
+ * Description. Renders chart image from given configuration file and sends result to a client.
  *
  * @param {Function}   config       chart configuration.
  * @param {Function}   callback     callback to be executed with result of PhantomJS pool render.

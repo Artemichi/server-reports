@@ -42,6 +42,7 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   dns.lookup(os.hostname(), function (err, add, fam) {
+    console.log("Nodejs report server. Status: on, waiting for request");
     console.log(`test -> http://${add}:${PORT}/chart`);
   });
 });
