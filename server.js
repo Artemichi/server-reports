@@ -19,7 +19,7 @@ app.use(cors());
 app.post("/report", (req, res) => {
   const IOdir = "../reports";
   const { source, nodes, params } = req.body;
-  const today = new Date().toLocaleString().split(",").shift();
+  const today = new Date().toISOString().slice(0, 10);
   const input = `${IOdir}/${source}`;
   const output = `${IOdir}/report_${today}.xlsx`;
   report.create(input, output, createConfig(nodes, params));
