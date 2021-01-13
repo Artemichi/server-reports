@@ -36,12 +36,17 @@ app.get("/chart", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.status(200).send("<h1>MAIN</h1>");
+  res
+    .status(200)
+    .send(
+      "<h1>Server status: OK</h1><br><ul><li>export module: <b>ready</b></li><li>report module: <b>ready</b></li></ul>"
+    );
 });
 
 app.listen(PORT, () => {
   dns.lookup(os.hostname(), function (err, add, fam) {
-    console.log("Nodejs report server. Status: on, waiting for request...");
-    console.log(`test -> http://${add}:${PORT}/chart`);
+    console.log("Nodejs report server.");
+    console.log("Status: ON, waiting for request...");
+    console.log(`Test -> http://${add}:${PORT}`);
   });
 });
