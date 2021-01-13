@@ -17,11 +17,10 @@ app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 
 app.post("/report", (req, res) => {
-  const IOdir = "../reports";
   const { source, nodes, params } = req.body;
-  const today = new Date().toISOString().slice(0, 10);
+  const IOdir = "../reports";
   const input = `${IOdir}/${source}`;
-  const output = `${IOdir}/report_${today}.xlsx`;
+  const output = `${IOdir}/${source.split(".").shift()}.xlsx`;
   report.create(input, output, createConfig(nodes, params));
   res.status(201).send();
 });
@@ -42,7 +41,7 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   dns.lookup(os.hostname(), function (err, add, fam) {
-    console.log("Nodejs report server. Status: on, waiting for request");
+    console.log("Nodejs report server. Status: on, waiting for request...");
     console.log(`test -> http://${add}:${PORT}/chart`);
   });
 });
