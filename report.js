@@ -1,6 +1,7 @@
 const Excel = require("exceljs");
 const exporter = require("highcharts-export-server");
 const fs = require("fs");
+const reportSend = require("./reportSend");
 
 /**
  * Description. Creates xlsx report from given csv source file.
@@ -58,6 +59,8 @@ async function create(input, output, config) {
 
     // Delete source csv file.
     fs.unlinkSync(input);
+
+    await reportSend();
 
     exporter.killPool();
   });
