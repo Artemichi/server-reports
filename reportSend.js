@@ -18,9 +18,7 @@ const message = {
   text: "Это автоматическая рассылка от системы IR-Master",
   from: "bot_irmaster@rigintelpro.ru",
   to: "<pia@rigintel.ru>",
-  subject:
-    "ОТЧЕТ ЗА " +
-    deltaDate(new Date(), -1, 0, 0).toLocaleDateString().slice(0, 10),
+  subject: "ОТЧЕТ ЗА " + deltaDate(new Date(), -1, 0, 0).toLocaleDateString().slice(0, 10),
   attachment: [
     {
       data:
@@ -33,14 +31,12 @@ const message = {
 //поиск в папке reports файлов созданных сегодня
 let files;
 try {
-  files = fs.readdirSync(reportsDir).filter((todayReport) => {
+  files = fs.readdirSync(reportsDir).filter(todayReport => {
     let fullPath = reportsDir + "/" + todayReport;
     let fileStat = fs.statSync(fullPath);
-    return fileStat.birthtime.toLocaleDateString() === currentDate
-      ? true
-      : false;
+    return fileStat.birthtime.toLocaleDateString() === currentDate ? true : false;
   });
-  files.forEach((file) => {
+  files.forEach(file => {
     message.attachment.push({
       path: reportsDir + "/" + file,
       type: "application/zip",
@@ -65,7 +61,3 @@ module.exports = async function () {
     console.log(err || message);
   });
 };
-// console.log(message.attachment);
-// client.send(message, function (err, message) {
-//   console.log(err || message);
-// });

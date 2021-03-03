@@ -28,19 +28,12 @@ app.post("/report", (req, res) => {
 app.get("/chart", (req, res) => {
   fs.readFile("data.json", "utf8", (err, data) => {
     const { nodes, params } = JSON.parse(data);
-    report.renderImageToClient(
-      createConfig(nodes, params),
-      res.status(200).send.bind(res)
-    );
+    report.renderImageToClient(createConfig(nodes, params), res.status(200).send.bind(res));
   });
 });
 
 app.get("/", (req, res) => {
-  res
-    .status(200)
-    .send(
-      "<h1>Server status: OK</h1><br><ul><li>export module: <b>ready</b></li><li>report module: <b>ready</b></li></ul>"
-    );
+  res.status(200).send("<h1>Server status: OK</h1>");
 });
 
 app.listen(PORT, () => {

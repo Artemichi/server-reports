@@ -57,10 +57,11 @@ async function create(input, output, config) {
     // Write created xlsx to given path.
     await xlsxWB.xlsx.writeFile(output);
 
-    // Delete source csv file.
-    fs.unlinkSync(input);
-
-    await reportSend();
+    // Delete source csv file and send generated reports to email.
+    fs.unlink(input, err => {
+      if (err) throw err;
+      reportSend();
+    });
 
     exporter.killPool();
   });
